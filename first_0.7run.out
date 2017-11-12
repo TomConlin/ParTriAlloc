@@ -1,0 +1,38 @@
+ julia -p4
+               _
+   _       _ _(_)_     |  A fresh approach to technical computing
+  (_)     | (_) (_)    |  Documentation: https://docs.julialang.org
+   _ _   _| |_  __ _   |  Type "?help" for help.
+  | | | | | | |/ _` |  |
+  | | |_| | | | (_| |  |  Version 0.7.0-DEV.2484 (2017-11-09 21:25 UTC)
+ _/ |\__'_|_|_|\__'_|  |  Commit 26eb512* (0 days old master)
+|__/                   |  x86_64-linux-gnu
+
+
+using SharedArrays
+
+include("/home/tomc/Projects/OHSU/Translator/bgee_coexpression/TissueBin/macros_TEC_minimal.jl")
+@parallelLT (macro with 1 method)
+
+
+
+N=50000;A=SharedArray{Int8}(((N*N)>>1)+N); 
+@time @sync @parallel for i in 1:N for j in i:N A[(j*N+i)>>1]=myid() end end
+
+211.409553 seconds (95.24 k allocations: 4.826 MiB)
+
+
+N=50000;A=SharedArray{Int8}(((N*N)>>1)+N); 
+@time @sync @parallelLT for i in 1:N for j in i:N A[(j*N+i)>>1]=myid() end end
+
+137.210585 seconds (846.53 k allocations: 43.710 MiB, 0.01% gc time)
+
+
+
+
+
+
+---------------------------------------------------------------
+
+ 
+

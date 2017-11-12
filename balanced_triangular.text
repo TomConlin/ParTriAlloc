@@ -1,0 +1,62 @@
+/**
+given N side of lower triangle matrix
+
+k              is number of processors 
+ 
+N^2 / 2        is the apx area of work to be done
+
+N^2 / 2k       is each processors fairish share 
+
+a:x            is an interval in 1:N
+
+a * (x-a) + (x-a)^2 / 2  is the area of work in the interval
+
+Given:
+	 a = 1
+  	 N = 100
+	 k = 4
+
+
+
+N^2 / 2k = 10000 / 8  == 1250  units of work (expect 1 to ~12 as first interval) 
+
+
+N^2 / 2k  = a * (x-a) + (x-a)^2 / 2 
+
+N^2 / k  = 2a * (x-a) + (x-a)^2
+
+N^2 / k  = 2ax - 2a^2 + (x-a)^2
+
+N^2 / k + 2a^2  = 2ax + (x-a)^2
+
+yuck
+
+x = (k*a^2 + N^2)^(1/2) / k^(1/2)
+
+
+
+N=60000; k=4; a=1; 
+for z=1:k
+	a = round((k*a^2 + N^2)^(1/2) / k^(1/2)) 
+   	println(a)
+end
+
+30000.0
+42426.0
+51961.0
+60000.0
+
+for a upper triangle, reverse and subtract from N
+
+**/
+
+		 	 
+function stp(N, np, begin)
+	if begin >= N 
+		return N
+	end
+	finish = floor(N^2 / 2*np*begin)
+	stp(N, np, finish                 )
+	println(finish)
+end
+
